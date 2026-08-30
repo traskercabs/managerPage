@@ -818,6 +818,9 @@
         let activeJob = null;
         let operatorWallet = 850;
         let totalWorkerSavings = 4320;
+ 
+
+        // When the application starts initStorage() checks whether data already exists in the browser or not if not, it creates default jobs, wallet balance, and savings,. 
 
         function initStorage() {
             if (!localStorage.getItem('LocalLoop_jobs_v2')) localStorage.setItem('LocalLoop_jobs_v2', JSON.stringify(initialDummyJobs));
@@ -827,6 +830,9 @@
             loadData();
         }
 
+
+        // loadData() takes the saved data from the browser and loads it into the app.Get the saved jobs, wallet, and savings, then update the screen...
+
         function loadData() {
             openJobs = JSON.parse(localStorage.getItem('LocalLoop_jobs_v2')) || [];
             operatorWallet = parseFloat(localStorage.getItem('LocalLoop_wallet')) || 850;
@@ -835,9 +841,14 @@
             updateStats();
         }
 
+        // It keeps different tabs synchronized when the jobs data changes
+
         window.addEventListener('storage', (e) => {
             if (e.key === 'LocalLoop_jobs_v2') { loadData(); }
         });
+
+
+        // filterLedger() shows only the jobs belonging to the category you click
 
         function filterLedger(catId, btnEl) {
             currentFilter = catId;
@@ -846,6 +857,17 @@
             document.getElementById('ledger-title').innerText = catId === 'all' ? 'Live Open Ledger' : `Live ${categories[catId].name}`;
             updateLedger();
         }
+
+
+
+        // This function filters, sorts, and displays the available jobs in the ledger. 
+        // Filters jobs by category.
+        // Sorts them by price or newest.
+        // Displays the jobs as cards.
+        // Shows “No open leads” if there are none.
+        // Removes the “new” status after displaying.
+        // Updates the sidebar job counts.
+
 
         function updateLedger() {
             const container = document.getElementById('ledger-container');
@@ -889,6 +911,8 @@
             updateSidebarCounts();
         }
 
+        // updateSidebarCounts() updates the numbers shown beside each category in the sidebar.
+
         function updateSidebarCounts() {
             document.getElementById('count-all').innerText = openJobs.length;
             Object.keys(categories).forEach(cat => {
@@ -897,10 +921,17 @@
             });
         }
 
+
+        // updateStats() updates the wallet and savings amounts shown on the screen.
+
         function updateStats() {
             document.getElementById('wallet-bal').innerText = `₹ ${operatorWallet.toFixed(2)}`;
             document.getElementById('total-saved').innerText = `₹ ${Math.round(totalWorkerSavings).toLocaleString()}`;
         }
+
+
+        // claimJob(id) handles a worker claiming a job.
+        // Find the job, check if wallet has enough money, deduct the micro-fee,  remove the job from the open list,  save everything, show the job as In Progress
 
         function claimJob(id) {
             const jobIndex = openJobs.findIndex(j => j.id === id);
@@ -927,7 +958,7 @@
             document.getElementById('aj-details').innerText = `Customer Agreed Price: ₹${activeJob.price} • Micro-Fee Paid: ₹${fee}`;
             panel.classList.add('show');
         }
-
+        // Finish job,  calculate savings,  update savings,  mark job completed,  hide active job. 
         function markJobComplete() {
             document.getElementById('active-panel').classList.remove('show');
             
@@ -944,6 +975,18 @@
         }
 
         initStorage();
-    </script>
+
+
+
+
+            //initStorage()	Sets up the initial data in browser storage.
+            // loadData()	Loads saved data from storage into the app.
+            // filterLedger()	Shows jobs from the selected category.
+            // updateLedger()	Filters, sorts and displays the jobs.
+            // updateSidebarCounts()	Updates the job counts for each category.
+            // updateStats()	Updates wallet and savings displayed on screen.
+            // claimJob()	Claims a job, deducts the fee and marks it as active.
+            // markJobComplete()	Completes the job and calculates the worker's savings. 
+ </script>
 </body>
 </html>
