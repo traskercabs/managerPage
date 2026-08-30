@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Uniters">
-    <title>CoopGig | Customortal</title>
+    <title>LocalLoop | Customer Portal</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -84,7 +84,7 @@
     <div class="app-container">
         
         <div class="cust-header">
-            <div class="logo">COOPGIG</div>
+            <div class="logo">LocalLoop</div>
             <div class="profile">Arsh's Account</div>
         </div>
 
@@ -163,7 +163,7 @@
                 </div>
 
                 <div class="savings-box">
-                    <div class="st-title">CoopGig Transparent Economics</div>
+                    <div class="st-title">LocalLoop Transparent Economics</div>
                     <div class="st-text">
                         A standard app would have taken <b>25% (<span id="r-agg">₹0</span>)</b>.<br><br>
                         Here, the worker paid a <b><span id="r-fee">₹0</span> micro-fee</b> upfront and kept 100% of your payment.<br><br>
@@ -282,23 +282,23 @@
                 isNew: true
             };
 
-            let openJobs = JSON.parse(localStorage.getItem('coopgig_jobs_v2')) || [];
+            let openJobs = JSON.parse(localStorage.getItem('LocalLoop_jobs_v2')) || [];
             openJobs.unshift(newJob);
-            localStorage.setItem('coopgig_jobs_v2', JSON.stringify(openJobs));
-            localStorage.setItem('coopgig_sync_status', 'searching');
+            localStorage.setItem('LocalLoop_jobs_v2', JSON.stringify(openJobs));
+            localStorage.setItem('LocalLoop_sync_status', 'searching');
 
             switchView('view-search');
         }
 
         window.addEventListener('storage', (e) => {
-            if (e.key === 'coopgig_sync_status') {
-                const status = localStorage.getItem('coopgig_sync_status');
+            if (e.key === 'LocalLoop_sync_status') {
+                const status = localStorage.getItem('LocalLoop_sync_status');
                 
                 if (status === 'matched') {
                     switchView('view-matched');
                 } 
                 else if (status === 'completed') {
-                    const jobData = JSON.parse(localStorage.getItem('coopgig_active_job'));
+                    const jobData = JSON.parse(localStorage.getItem('LocalLoop_active_job'));
                     if(jobData) {
                         activeJobPrice = jobData.price;
                         activeJobCat = jobData.catId;
@@ -326,7 +326,7 @@
             document.getElementById('cust-price').value = '';
             document.getElementById('urgent-check').checked = false;
             document.getElementById('cust-price').placeholder = "e.g. 500";
-            localStorage.setItem('coopgig_sync_status', 'idle');
+            localStorage.setItem('LocalLoop_sync_status', 'idle');
             switchView('view-main');
         }
 
