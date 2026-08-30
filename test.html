@@ -821,7 +821,7 @@
         let totalWorkerSavings = 4320;
  
 
-        // When the application starts initStorage() checks whether data already exists in the browser or not if not, it creates default jobs, wallet balance, and savings,. 
+        
 
         function initStorage() {
             if (!localStorage.getItem('LocalLoop_jobs_v2'))
@@ -835,7 +835,7 @@
         }
 
 
-        // loadData() takes the saved data from the browser and loads it into the app. Get the saved jobs, wallet, and savings, then update the screen...
+        
 
         function loadData() {
             openJobs = JSON.parse(localStorage.getItem('LocalLoop_jobs_v2')) || [];
@@ -845,8 +845,7 @@
             updateStats();
         }
 
-        // It keeps different tabs synchronized when the jobs data changes
-        // Jaise agar customerPortal me kuch add kia to manager portal me show iski vajah se hi hoga.
+      
 
         window.addEventListener('storage', (e) => {
             if (e.key === 'LocalLoop_jobs_v2') { loadData(); }
@@ -859,7 +858,7 @@
             currentFilter = catId;
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
-            document.getElementById('ledger-title').innerText = catId === 'all' ? 'Live Open Ledger' : `Live ${categories[catId].name}`; // iska matlab ki agar selected category all leads hai to display kro 'live open ledger' nhi to jo category visited hai uska nam show kro.
+            document.getElementById('ledger-title').innerText = catId === 'all' ? 'Live Open Ledger' : `Live ${categories[catId].name}`; 
             updateLedger();
         }
 
@@ -878,22 +877,22 @@
             const container = document.getElementById('ledger-container');
             const sortMode = document.getElementById('sort-select').value;
             
-            let filtered = currentFilter === 'all' ? [...openJobs] : openJobs.filter(j => j.catId === currentFilter); // agar all selected hai to sb dikhao agar j ke ander kuch specific hai to vo categroy dikhao
+            let filtered = currentFilter === 'all' ? [...openJobs] : openJobs.filter(j => j.catId === currentFilter); 
             
             if (sortMode === 'highest') {
-                filtered.sort((a, b) => b.price - a.price); // condition filtered me lag rhi hai iska matlab seperate jobs ke ander bhi pricing wala filter kaam krega.
+                filtered.sort((a, b) => b.price - a.price); 
             } else {
                 filtered.sort((a, b) => b.id - a.id);
             }
             
-            if (filtered.length === 0) {  //caregiving in stock website. ( Inline styling kri hai isme)
+            if (filtered.length === 0) { 
                 container.innerHTML = '<div style="text-align:center; padding:40px; color:#666; font-size:13px;">No open leads in this category.</div>';
             } else {
                 container.innerHTML = filtered.map(job => {
                     const cat = categories[job.catId];
-                    const urgentBadge = job.urgent ? `<span class="badge urgent-badge">🚨 PRIORITY</span>` : ''; // if/else ka shortcut use hua hai, agr urget hau to priority badge do. ternary operator.
+                    const urgentBadge = job.urgent ? `<span class="badge urgent-badge">🚨 PRIORITY</span>` : ''; 
 
-                    // new job ko new likh ke aayega
+                    
                     return `
                     <div class="job-card ${job.isNew ? 'job-new' : ''}"> 
                         <div>
@@ -914,11 +913,11 @@
             if (openJobs.some(j => j.isNew)) {
                 openJobs.forEach(j => j.isNew = false);
                 localStorage.setItem('LocalLoop_jobs_v2', JSON.stringify(openJobs));
-            } // yahan pe new job old hojayegi.
+            } 
             updateSidebarCounts();
         }
 
-        // updateSidebarCounts() updates the numbers shown beside each category in the sidebar.
+       
 
         function updateSidebarCounts() {
             document.getElementById('count-all').innerText = openJobs.length;
@@ -929,17 +928,14 @@
         }
 
 
-        // updateStats() updates the wallet and savings amounts shown on the screen.
-
+        
         function updateStats() {
             document.getElementById('wallet-bal').innerText = `₹ ${operatorWallet.toFixed(2)}`;
             document.getElementById('total-saved').innerText = `₹ ${Math.round(totalWorkerSavings).toLocaleString()}`;
         }
 
 
-        // claimJob(id) handles a worker claiming a job.
-        // Find the job, check if wallet has enough money, deduct the micro-fee,  remove the job from the open list,  save everything, show the job as In Progress
-
+       
         function claimJob(id) {
             const jobIndex = openJobs.findIndex(j => j.id === id);
             activeJob = openJobs[jobIndex];
@@ -965,7 +961,7 @@
             document.getElementById('aj-details').innerText = `Customer Agreed Price: ₹${activeJob.price} • Micro-Fee Paid: ₹${fee}`;
             panel.classList.add('show');
         }
-        // Finish job,  calculate savings,  update savings,  mark job completed,  hide active job. 
+        
         function markJobComplete() {
             document.getElementById('active-panel').classList.remove('show');
             
@@ -986,14 +982,7 @@
 
 
 
-            //initStorage()	Sets up the initial data in browser storage.
-            // loadData()	Loads saved data from storage into the app.
-            // filterLedger()	Shows jobs from the selected category.
-            // updateLedger()	Filters, sorts and displays the jobs.
-            // updateSidebarCounts()	Updates the job counts for each category.
-            // updateStats()	Updates wallet and savings displayed on screen.
-            // claimJob()	Claims a job, deducts the fee and marks it as active.
-            // markJobComplete()	Completes the job and calculates the worker's savings. 
+            
  </script>
 </body>
 </html>
