@@ -1,11 +1,17 @@
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="author" content="Uniters">
-    <meta name="description" content="CoopGig - Smart India Hackathon Prototype | Faculty of Technology | Cyber Security">
-    <title>CoopGig | Operator Control Center</title>
+    <meta name="description" content="LocalLoop - Smart India Hackathon Prototype | Faculty of Technology | Cyber Security">
+    <title>LocalLoop | Operator Control Center</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -73,8 +79,8 @@
         .metric-card { padding: 12px; border-radius: 6px; font-size: 13px; display: flex; justify-content: space-between; }
         .metric-card.aggregator { background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); color: #888; }
         .metric-card.aggregator .val { color: #ef4444; text-decoration: line-through; }
-        .metric-card.coopgig { background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); color: #ededed; }
-        .metric-card.coopgig .val { color: #34d399; font-weight: 600; }
+        .metric-card.LocalLoop { background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); color: #ededed; }
+        .metric-card.LocalLoop .val { color: #34d399; font-weight: 600; }
         .metric-card.saved { background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); color: #ededed; }
         .metric-card.saved .val { color: #60a5fa; font-weight: 700; font-size: 15px; }
 
@@ -721,9 +727,9 @@
 
     <div class="desk-header">
         <div class="logo-area">
-            <div class="logo-badge">COOPGIG</div>
+            <div class="logo-badge">LocalLoop</div>
             <div class="title-text">
-                <h1>CoopGig by Uniters</h1>
+                <h1>LocalLoop by Uniters</h1>
                 <p>Zero-Commission • Open Market Dispatch</p>
             </div>
         </div>
@@ -757,7 +763,7 @@
             <div class="nav-label">Platform Economics</div>
             <div class="metrics-container">
                 <div class="metric-card aggregator"><span>Aggregator Cut:</span><span class="val">25% – 30%</span></div>
-                <div class="metric-card coopgig"><span>CoopGig Fee:</span><span class="val">₹15 – ₹25</span></div>
+                <div class="metric-card LocalLoop"><span>LocalLoop Fee:</span><span class="val">₹15 – ₹25</span></div>
                 <div class="metric-card saved"><span>Worker Wealth Saved:</span><span class="val" id="total-saved">₹ 4,320</span></div>
             </div>
         </div>
@@ -818,55 +824,83 @@
         let activeJob = null;
         let operatorWallet = 850;
         let totalWorkerSavings = 4320;
+ 
+
+        // When the application starts initStorage() checks whether data already exists in the browser or not if not, it creates default jobs, wallet balance, and savings,. 
 
         function initStorage() {
-            if (!localStorage.getItem('coopgig_jobs_v2')) localStorage.setItem('coopgig_jobs_v2', JSON.stringify(initialDummyJobs));
-            if (!localStorage.getItem('coopgig_wallet')) localStorage.setItem('coopgig_wallet', '850');
-            if (!localStorage.getItem('coopgig_savings')) localStorage.setItem('coopgig_savings', '4320');
-            localStorage.setItem('coopgig_sync_status', 'idle');
+            if (!localStorage.getItem('LocalLoop_jobs_v2'))
+            localStorage.setItem('LocalLoop_jobs_v2', JSON.stringify(initialDummyJobs));
+            if (!localStorage.getItem('LocalLoop_wallet')) 
+            localStorage.setItem('LocalLoop_wallet', '850');
+            if (!localStorage.getItem('LocalLoop_savings')) 
+            localStorage.setItem('LocalLoop_savings', '4320');
+            localStorage.setItem('LocalLoop_sync_status', 'idle');
             loadData();
         }
 
+
+        // loadData() takes the saved data from the browser and loads it into the app. Get the saved jobs, wallet, and savings, then update the screen...
+
         function loadData() {
-            openJobs = JSON.parse(localStorage.getItem('coopgig_jobs_v2')) || [];
-            operatorWallet = parseFloat(localStorage.getItem('coopgig_wallet')) || 850;
-            totalWorkerSavings = parseFloat(localStorage.getItem('coopgig_savings')) || 4320;
+            openJobs = JSON.parse(localStorage.getItem('LocalLoop_jobs_v2')) || [];
+            operatorWallet = parseFloat(localStorage.getItem('LocalLoop_wallet')) || 850;
+            totalWorkerSavings = parseFloat(localStorage.getItem('LocalLoop_savings')) || 4320;
             updateLedger();
             updateStats();
         }
 
+        // It keeps different tabs synchronized when the jobs data changes
+        // Jaise agar customerPortal me kuch add kia to manager portal me show iski vajah se hi hoga.
+
         window.addEventListener('storage', (e) => {
-            if (e.key === 'coopgig_jobs_v2') { loadData(); }
+            if (e.key === 'LocalLoop_jobs_v2') { loadData(); }
         });
+
+
+        // filterLedger() shows only the jobs belonging to the category you click
 
         function filterLedger(catId, btnEl) {
             currentFilter = catId;
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
-            document.getElementById('ledger-title').innerText = catId === 'all' ? 'Live Open Ledger' : `Live ${categories[catId].name}`;
+            document.getElementById('ledger-title').innerText = catId === 'all' ? 'Live Open Ledger' : `Live ${categories[catId].name}`; // iska matlab ki agar selected category all leads hai to display kro 'live open ledger' nhi to jo category visited hai uska nam show kro.
             updateLedger();
         }
+
+
+
+        // This function filters, sorts, and displays the available jobs in the ledger. 
+        // Filters jobs by category.
+        // Sorts them by price or newest.
+        // Displays the jobs as cards.
+        // Shows “No open leads” if there are none.
+        // Removes the “new” status after displaying.
+        // Updates the sidebar job counts.
+
 
         function updateLedger() {
             const container = document.getElementById('ledger-container');
             const sortMode = document.getElementById('sort-select').value;
             
-            let filtered = currentFilter === 'all' ? [...openJobs] : openJobs.filter(j => j.catId === currentFilter);
+            let filtered = currentFilter === 'all' ? [...openJobs] : openJobs.filter(j => j.catId === currentFilter); // agar all selected hai to sb dikhao agar j ke ander kuch specific hai to vo categroy dikhao
             
             if (sortMode === 'highest') {
-                filtered.sort((a, b) => b.price - a.price);
+                filtered.sort((a, b) => b.price - a.price); // condition filtered me lag rhi hai iska matlab seperate jobs ke ander bhi pricing wala filter kaam krega.
             } else {
                 filtered.sort((a, b) => b.id - a.id);
             }
             
-            if (filtered.length === 0) {
+            if (filtered.length === 0) {  //caregiving in stock website. ( Inline styling kri hai isme)
                 container.innerHTML = '<div style="text-align:center; padding:40px; color:#666; font-size:13px;">No open leads in this category.</div>';
             } else {
                 container.innerHTML = filtered.map(job => {
                     const cat = categories[job.catId];
-                    const urgentBadge = job.urgent ? `<span class="badge urgent-badge">🚨 PRIORITY</span>` : '';
+                    const urgentBadge = job.urgent ? `<span class="badge urgent-badge">🚨 PRIORITY</span>` : ''; // if/else ka shortcut use hua hai, agr urget hau to priority badge do. ternary operator.
+
+                    // new job ko new likh ke aayega
                     return `
-                    <div class="job-card ${job.isNew ? 'job-new' : ''}">
+                    <div class="job-card ${job.isNew ? 'job-new' : ''}"> 
                         <div>
                             ${urgentBadge}
                             <span class="badge ${cat.badgeClass}">${cat.name}</span>
@@ -884,10 +918,12 @@
             
             if (openJobs.some(j => j.isNew)) {
                 openJobs.forEach(j => j.isNew = false);
-                localStorage.setItem('coopgig_jobs_v2', JSON.stringify(openJobs));
-            }
+                localStorage.setItem('LocalLoop_jobs_v2', JSON.stringify(openJobs));
+            } // yahan pe new job old hojayegi.
             updateSidebarCounts();
         }
+
+        // updateSidebarCounts() updates the numbers shown beside each category in the sidebar.
 
         function updateSidebarCounts() {
             document.getElementById('count-all').innerText = openJobs.length;
@@ -897,10 +933,17 @@
             });
         }
 
+
+        // updateStats() updates the wallet and savings amounts shown on the screen.
+
         function updateStats() {
             document.getElementById('wallet-bal').innerText = `₹ ${operatorWallet.toFixed(2)}`;
             document.getElementById('total-saved').innerText = `₹ ${Math.round(totalWorkerSavings).toLocaleString()}`;
         }
+
+
+        // claimJob(id) handles a worker claiming a job.
+        // Find the job, check if wallet has enough money, deduct the micro-fee,  remove the job from the open list,  save everything, show the job as In Progress
 
         function claimJob(id) {
             const jobIndex = openJobs.findIndex(j => j.id === id);
@@ -912,10 +955,10 @@
             operatorWallet -= fee;
             openJobs.splice(jobIndex, 1);
             
-            localStorage.setItem('coopgig_wallet', operatorWallet);
-            localStorage.setItem('coopgig_jobs_v2', JSON.stringify(openJobs));
-            localStorage.setItem('coopgig_sync_status', 'matched');
-            localStorage.setItem('coopgig_active_job', JSON.stringify(activeJob));
+            localStorage.setItem('LocalLoop_wallet', operatorWallet);
+            localStorage.setItem('LocalLoop_jobs_v2', JSON.stringify(openJobs));
+            localStorage.setItem('LocalLoop_sync_status', 'matched');
+            localStorage.setItem('LocalLoop_active_job', JSON.stringify(activeJob));
             
             updateLedger();
             updateStats();
@@ -927,7 +970,7 @@
             document.getElementById('aj-details').innerText = `Customer Agreed Price: ₹${activeJob.price} • Micro-Fee Paid: ₹${fee}`;
             panel.classList.add('show');
         }
-
+        // Finish job,  calculate savings,  update savings,  mark job completed,  hide active job. 
         function markJobComplete() {
             document.getElementById('active-panel').classList.remove('show');
             
@@ -936,14 +979,26 @@
             const savedThisJob = aggregatorCut - fee;
             
             if (savedThisJob > 0) totalWorkerSavings += savedThisJob;
-            localStorage.setItem('coopgig_savings', totalWorkerSavings);
-            localStorage.setItem('coopgig_sync_status', 'completed'); 
+            localStorage.setItem('LocalLoop_savings', totalWorkerSavings);
+            localStorage.setItem('LocalLoop_sync_status', 'completed'); 
             
             updateStats();
             activeJob = null;
         }
 
         initStorage();
-    </script>
+
+
+
+
+            //initStorage()	Sets up the initial data in browser storage.
+            // loadData()	Loads saved data from storage into the app.
+            // filterLedger()	Shows jobs from the selected category.
+            // updateLedger()	Filters, sorts and displays the jobs.
+            // updateSidebarCounts()	Updates the job counts for each category.
+            // updateStats()	Updates wallet and savings displayed on screen.
+            // claimJob()	Claims a job, deducts the fee and marks it as active.
+            // markJobComplete()	Completes the job and calculates the worker's savings. 
+ </script>
 </body>
 </html>
