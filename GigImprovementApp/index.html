@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Uniters">
-    <title>LocalLoop | Customer Portal</title>
+    <title>CoopGig | Customortal</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -18,7 +18,7 @@
         }
         
         .cust-header { padding: 32px 24px 16px; background: #ffffff; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-        .cust-header .logo { font-weight: 800; font-size: 18px; color: #0f172a;  letter-spacing: 0.5px;}
+        .cust-header .logo { font-weight: 800; font-size: 18px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px;}
         .cust-header .profile { font-size: 12px; background: #f1f5f9; padding: 6px 12px; border-radius: 20px; font-weight: 600; color: #3b82f6; }
         
         .cust-body { flex: 1; overflow-y: auto; padding: 24px; position: relative; }
@@ -52,6 +52,10 @@
 
         .btn-primary { width: 100%; background: #0f172a; color: #ffffff; padding: 16px; border-radius: 8px; border: none; font-weight: 600; font-size: 15px; cursor: pointer; margin-top: 8px; transition: 0.2s; }
         .btn-primary:hover { background: #1e293b; transform: translateY(-1px); }
+        
+        /* NEW: WhatsApp Button Styling */
+        .btn-whatsapp { width: 100%; background: #25D366; color: #ffffff; padding: 16px; border-radius: 8px; border: none; font-weight: 600; font-size: 15px; cursor: pointer; margin-top: auto; transition: 0.2s; }
+        .btn-whatsapp:hover { background: #1fae51; transform: translateY(-1px); }
 
         /* Screens */
         .screen-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #ffffff; padding: 40px 24px; display: none; flex-direction: column; z-index: 5; }
@@ -84,7 +88,7 @@
     <div class="app-container">
         
         <div class="cust-header">
-            <div class="logo">LocalLoop</div>
+            <div class="logo">COOPGIG</div>
             <div class="profile">Arsh's Account</div>
         </div>
 
@@ -147,6 +151,9 @@
                         <div><div class="tl-text">In Progress</div><div class="tl-sub">Awaiting task completion</div></div>
                     </div>
                 </div>
+                
+                <!-- NEW: Action Button for the Customer to Ping the Operator -->
+                <button class="btn-whatsapp" onclick="contactOperator()">💬 Chat with Operator</button>
             </div>
 
             <!-- Receipt View -->
@@ -163,7 +170,7 @@
                 </div>
 
                 <div class="savings-box">
-                    <div class="st-title">LocalLoop Transparent Economics</div>
+                    <div class="st-title">CoopGig Transparent Economics</div>
                     <div class="st-text">
                         A standard app would have taken <b>25% (<span id="r-agg">₹0</span>)</b>.<br><br>
                         Here, the worker paid a <b><span id="r-fee">₹0</span> micro-fee</b> upfront and kept 100% of your payment.<br><br>
@@ -282,23 +289,23 @@
                 isNew: true
             };
 
-            let openJobs = JSON.parse(localStorage.getItem('LocalLoop_jobs_v2')) || [];
+            let openJobs = JSON.parse(localStorage.getItem('coopgig_jobs_v2')) || [];
             openJobs.unshift(newJob);
-            localStorage.setItem('LocalLoop_jobs_v2', JSON.stringify(openJobs));
-            localStorage.setItem('LocalLoop_sync_status', 'searching');
+            localStorage.setItem('coopgig_jobs_v2', JSON.stringify(openJobs));
+            localStorage.setItem('coopgig_sync_status', 'searching');
 
             switchView('view-search');
         }
 
         window.addEventListener('storage', (e) => {
-            if (e.key === 'LocalLoop_sync_status') {
-                const status = localStorage.getItem('LocalLoop_sync_status');
+            if (e.key === 'coopgig_sync_status') {
+                const status = localStorage.getItem('coopgig_sync_status');
                 
                 if (status === 'matched') {
                     switchView('view-matched');
                 } 
                 else if (status === 'completed') {
-                    const jobData = JSON.parse(localStorage.getItem('LocalLoop_active_job'));
+                    const jobData = JSON.parse(localStorage.getItem('coopgig_active_job'));
                     if(jobData) {
                         activeJobPrice = jobData.price;
                         activeJobCat = jobData.catId;
@@ -308,6 +315,27 @@
                 }
             }
         });
+
+                // NEW: Customer to Operator WhatsApp Integration (Direct to App)
+        function contactOperator() {
+        const assignedNumber = localStorage.getItem('coopgig_assigned_number');
+        
+        if (!assignedNumber) {
+            alert("The operator is still assigning a worker. Please wait a moment!");
+            return;
+        }
+
+        const taskStr = document.getElementById('cust-task').value.trim() || categories[selectedCat].name;
+        const message = `Hi! I just booked a "${taskStr}" task on CoopGig for ₹${activeJobPrice}. I'm reaching out to coordinate the details and share my live location!`;
+        
+        // THE FIX: Use the deep-link URI scheme for mobile to bypass the browser page
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.location.href = `whatsapp://send?phone=${assignedNumber}&text=${encodeURIComponent(message)}`;
+        } else {
+            // Desktop fallback
+            window.open(`https://web.whatsapp.com/send?phone=${assignedNumber}&text=${encodeURIComponent(message)}`, '_blank');
+        }
+    }
 
         function generateReceipt() {
             const fee = categories[activeJobCat].fee;
@@ -326,7 +354,7 @@
             document.getElementById('cust-price').value = '';
             document.getElementById('urgent-check').checked = false;
             document.getElementById('cust-price').placeholder = "e.g. 500";
-            localStorage.setItem('LocalLoop_sync_status', 'idle');
+            localStorage.setItem('coopgig_sync_status', 'idle');
             switchView('view-main');
         }
 
