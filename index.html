@@ -1008,7 +1008,7 @@
                         <button class="bot-btn" onclick="setNumber('919368274048')">
                             Shivyanshu <span>9368274048</span>
                         </button>
-                        <button class="bot-btn" onclick="setNumber('918077830147s')">
+                        <button class="bot-btn" onclick="setNumber('918077830147')">
                             Bhumi <span>8077830147</span>
                         </button>
                         <button class="bot-btn" onclick="setNumber('917983723885')">
@@ -1023,7 +1023,7 @@
                        
                         <div style="font-size: 10px; color: #555; text-align: center; margin: 4px 0;">— OR MANUAL ENTRY —</div>
                         <input type="tel" id="wa-number-input" placeholder="e.g., 919876543210" value="91" />
-                        <button class="btn-send-inline" onclick="submitWaInline()">Send Invite Link</button>
+                        <button class="btn-send-inline" onclick="submitWaInline()">Send Invite</button>
                     </div>
 
                     <button class="btn-complete" onclick="markJobComplete()">Mark Task Completed</button>
@@ -1221,6 +1221,7 @@
             
             const encodedTitle = encodeURIComponent(activeJob.title);
             const workerUrl = `https://coopgig.app/dispatch?jobId=${activeJob.id}&pay=${activeJob.price}&task=${encodedTitle}`;
+            const message = `**\n${activeJob.title}\nDirect Offer: ₹${activeJob.price}\n\n:\n${workerUrl}`;
             
 
             // Close the inline box after sending
