@@ -17,6 +17,7 @@
             font-family: 'Inter', sans-serif; 
         }
         
+        /* 1. Core Layout Structure (Prevents ALL clipping) */
         body { 
             background: #0a0a0a; 
             color: #ededed; 
@@ -28,7 +29,7 @@
         }
         
         .demo-header { 
-            flex-shrink: 0; 
+            flex-shrink: 0; /* Prevents squishing */
             background: #111; 
             border-bottom: 1px solid #333; 
             padding: max(12px, env(safe-area-inset-top)) 24px 12px; 
@@ -69,7 +70,7 @@
         }
 
         .desk-header { 
-            flex-shrink: 0; 
+            flex-shrink: 0; /* Prevents squishing */
             background: #050505; 
             border-bottom: 1px solid #222; 
             padding: 20px 32px; 
@@ -130,10 +131,11 @@
         .desk-body { 
             flex: 1; 
             display: flex; 
-            overflow: hidden; 
+            overflow: hidden; /* Keeps scrollable areas contained inside */
             width: 100%; 
         }
         
+        /* 2. Desktop Sidebar Styling */
         .sidebar { 
             width: 280px; 
             flex-shrink: 0;
@@ -245,10 +247,11 @@
             font-size: 15px; 
         }
 
+        /* 3. Main Stage Styling */
         .main-stage { 
             flex: 1; 
             padding: 32px; 
-            overflow-y: auto; 
+            overflow-y: auto; /* Independent scrolling */
             position: relative; 
         }
         
@@ -279,13 +282,14 @@
             color: #a0aec0; 
         }
         
+        /* NEW: Action Group & WhatsApp Button Styling */
         .aj-actions { 
             display: flex; 
             flex-direction: column; 
             gap: 10px; 
             min-width: 220px; 
         }
-
+        
         .btn-whatsapp { 
             background: #25D366; 
             color: #fff; 
@@ -305,7 +309,7 @@
         .btn-whatsapp:hover { 
             background: #1fae51; 
         }
-
+        
         .btn-complete { 
             background: #3b82f6; 
             color: #fff; 
@@ -321,6 +325,7 @@
             background: #2563eb; 
         }
 
+        /* NEW: Inline Box Styling */
         .wa-inline-box {
             background: #111; 
             border: 1px solid #333; 
@@ -513,16 +518,9 @@
         }
         
         @keyframes highlightNew { 
-            0% { 
-                box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); 
-                border-color: #34d399; 
-            } 
-            70% { 
-                box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); 
-            } 
-            100% { 
-                box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); 
-            } 
+            0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); border-color: #34d399; } 
+            70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); } 
+            100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); } 
         }
 
         .job-new { 
@@ -530,415 +528,592 @@
             border-color: #34d399; 
         }
 
-        @media (max-width: 900px) {
-            html, body { 
-                width: 100%; 
-                height: 100%; 
-                min-height: 100%; 
-                overflow: hidden; 
-            }
-            body { 
-                display: flex; 
-                flex-direction: column; 
-            }
-            .demo-header { 
-                flex: 0 0 auto; 
-                min-height: 44px; 
-                padding: max(10px, env(safe-area-inset-top)) 14px 10px; 
-                display: grid; 
-                grid-template-columns: 1fr auto 1fr; 
-                align-items: center; 
-                gap: 8px; 
-                font-size: 10px; 
-                white-space: nowrap; 
-            }
-            .demo-header > div:first-child { 
-                text-align: left; 
-                overflow: hidden; 
-                text-overflow: ellipsis; 
-            }
-            .demo-header > div:last-child { 
-                text-align: right; 
-            }
-            .demo-header .live-badge { 
-                justify-self: center; 
-                padding: 4px 8px; 
-                font-size: 9px; 
-            }
-            .desk-header { 
-                flex: 0 0 auto; 
-                width: 100%; 
-                padding: 14px 16px; 
-                gap: 14px; 
-                display: flex; 
-                flex-direction: row; 
-                align-items: center; 
-                justify-content: space-between; 
-            }
-            .logo-area { 
-                min-width: 0; 
-                gap: 10px; 
-            }
-            .logo-badge { 
-                flex-shrink: 0; 
-                font-size: 11px; 
-                padding: 7px 9px; 
-                letter-spacing: .7px; 
-            }
-            .title-text { 
-                min-width: 0; 
-            }
-            .title-text h1 { 
-                font-size: 15px; 
-                margin-bottom: 3px; 
-                white-space: nowrap; 
-                overflow: hidden; 
-                text-overflow: ellipsis; 
-            }
-            .title-text p { 
-                font-size: 10px; 
-                white-space: nowrap; 
-                overflow: hidden; 
-                text-overflow: ellipsis; 
-            }
-            .wallet-pill { 
-                flex-shrink: 0; 
-                padding: 7px 9px; 
-                min-width: 94px; 
-                border-radius: 5px; 
-                gap: 2px; 
-                font-size: 9px; 
-            }
-            .wallet-pill span { 
-                font-size: 12px; 
-            }
-            .desk-body { 
-                flex: 1 1 auto; 
-                min-height: 0; 
-                width: 100%; 
-                display: flex; 
-                flex-direction: column; 
-                overflow: hidden; 
-            }
-            .sidebar { 
-                flex: 0 0 auto; 
-                width: 100%; 
-                min-width: 0; 
-                padding: 12px 16px 10px; 
-                border-right: none; 
-                border-bottom: 1px solid #222; 
-                overflow: hidden; 
-                display: block; 
-            }
-            .sidebar .nav-label { 
-                margin: 4px 0 7px; 
-                font-size: 9px; 
-            }
-            .sidebar .nav-label:first-child { 
-                margin-top: 0; 
-            }
-            .cat-list { 
-                width: 100%; 
-                display: flex; 
-                flex-direction: row; 
-                flex-wrap: nowrap; 
-                gap: 7px; 
-                margin: 0; 
-                padding: 0 0 8px; 
-                overflow-x: auto; 
-                overflow-y: hidden; 
-                -webkit-overflow-scrolling: touch; 
-                scrollbar-width: none; 
-            }
-            .cat-list::-webkit-scrollbar { 
-                display: none; 
-            }
-            .cat-btn { 
-                flex: 0 0 auto; 
-                width: auto; 
-                min-height: 36px; 
-                padding: 8px 12px; 
-                border-radius: 6px; 
-                font-size: 11px; 
-                white-space: nowrap; 
-                touch-action: manipulation; 
-            }
-            .metrics-container { 
-                width: 100%; 
-                display: flex; 
-                flex-direction: row; 
-                flex-wrap: nowrap; 
-                gap: 8px; 
-                padding: 0 0 4px; 
-                overflow-x: auto; 
-                overflow-y: hidden; 
-                -webkit-overflow-scrolling: touch; 
-                scrollbar-width: none; 
-            }
-            .metrics-container::-webkit-scrollbar { 
-                display: none; 
-            }
-            .metric-card { 
-                flex: 0 0 auto; 
-                min-width: 165px; 
-                min-height: 44px; 
-                padding: 10px; 
-                font-size: 10px; 
-            }
-            .metric-card.saved .val { 
-                font-size: 12px; 
-            }
-            .main-stage { 
-                flex: 1 1 auto; 
-                min-height: 0; 
-                min-width: 0; 
-                width: 100%; 
-                padding: 14px 14px max(24px, env(safe-area-inset-bottom)); 
-                overflow-x: hidden; 
-                overflow-y: auto; 
-                -webkit-overflow-scrolling: touch; 
-                overscroll-behavior-y: contain; 
-            }
-            .filter-bar { 
-                width: 100%; 
-                display: flex; 
-                flex-direction: row; 
-                align-items: center; 
-                justify-content: space-between; 
-                gap: 10px; 
-                padding-bottom: 12px; 
-                margin-bottom: 12px; 
-            }
-            .filter-title { 
-                min-width: 0; 
-                font-size: 13px; 
-            }
-            .filter-title span { 
-                white-space: nowrap; 
-                overflow: hidden; 
-                text-overflow: ellipsis; 
-            }
-            .sort-dropdown { 
-                flex-shrink: 0; 
-                min-height: 34px; 
-                padding: 7px 9px; 
-                font-size: 10px; 
-                max-width: 150px; 
-            }
-            .active-job-panel { 
-                width: 100%; 
-                margin-bottom: 14px; 
-                padding: 14px; 
-                display: none; 
-                flex-direction: column; 
-                align-items: stretch; 
-                gap: 12px; 
-                border-radius: 7px; 
-            }
-            .active-job-panel.show { 
-                display: flex; 
-            }
-            .aj-title { 
-                font-size: 15px; 
-                line-height: 1.35; 
-            }
-            .aj-details { 
-                font-size: 11px; 
-                line-height: 1.5; 
-            }
-            .aj-actions { 
-                width: 100%; 
-                min-width: 0; 
-            }
-            .btn-complete, .btn-whatsapp { 
-                width: 100%; 
-                min-height: 42px; 
-                padding: 10px 14px; 
-                font-size: 12px; 
-                touch-action: manipulation; 
-            }
-            .job-card { 
-                width: 100%; 
-                min-width: 0; 
-                padding: 14px; 
-                display: flex; 
-                flex-direction: column; 
-                align-items: stretch; 
-                gap: 13px; 
-                margin-bottom: 10px; 
-                border-radius: 7px; 
-            }
-            .job-card > div:first-child { 
-                width: 100%; 
-                min-width: 0; 
-            }
-            .badge { 
-                font-size: 8px; 
-                padding: 4px 6px; 
-                margin-bottom: 8px; 
-                margin-right: 4px; 
-            }
-            .job-title { 
-                font-size: 14px; 
-                line-height: 1.4; 
-                margin-bottom: 5px; 
-                overflow-wrap: anywhere; 
-            }
-            .job-details { 
-                font-size: 11px; 
-                line-height: 1.5; 
-                overflow-wrap: anywhere; 
-            }
-            .action-pane { 
-                width: 100%; 
-                display: grid; 
-                grid-template-columns: 1fr auto; 
-                grid-template-rows: auto auto; 
-                column-gap: 12px; 
-                row-gap: 3px; 
-                align-items: center; 
-                padding-top: 12px; 
-                border-top: 1px solid #222; 
-                text-align: left; 
-            }
-            .job-price { 
-                grid-column: 1; 
-                grid-row: 1; 
-                font-size: 18px; 
-                margin: 0; 
-            }
-            .job-sub { 
-                grid-column: 1; 
-                grid-row: 2; 
-                font-size: 9px; 
-                margin: 0; 
-            }
-            .claim-btn { 
-                grid-column: 2; 
-                grid-row: 1 / span 2; 
-                min-height: 40px; 
-                padding: 9px 14px; 
-                font-size: 11px; 
-                white-space: nowrap; 
-                touch-action: manipulation; 
-            }
-            #ledger-container > div[style*="text-align:center"] { 
-                padding: 30px 15px !important; 
-                font-size: 11px !important; 
-            }
-        }
+        /* 4. THE FIX: Ultra-Refined Mobile Styling */
+       /* =========================================================
+   MOBILE FIX — COMPLETE RESPONSIVE LAYOUT
+   ========================================================= */
+@media (max-width: 900px) {
 
-        @media (max-width: 480px) {
-            .demo-header { 
-                grid-template-columns: 1fr auto 1fr; 
-                font-size: 9px; 
-            }
-            .demo-header .live-badge { 
-                font-size: 8px; 
-                padding: 3px 7px; 
-            }
-            .desk-header { 
-                padding: 12px; 
-            }
-            .logo-area { 
-                gap: 8px; 
-            }
-            .logo-badge { 
-                font-size: 10px; 
-                padding: 6px 8px; 
-            }
-            .title-text h1 { 
-                font-size: 13px; 
-            }
-            .title-text p { 
-                font-size: 9px; 
-            }
-            .wallet-pill { 
-                min-width: 82px; 
-                padding: 6px 7px; 
-            }
-            .wallet-pill span { 
-                font-size: 11px; 
-            }
-            .sidebar { 
-                padding: 10px 12px 8px; 
-            }
-            .cat-btn { 
-                min-height: 34px; 
-                padding: 7px 10px; 
-                font-size: 10px; 
-            }
-            .metric-card { 
-                min-width: 150px; 
-                padding: 9px; 
-                font-size: 9px; 
-            }
-            .main-stage { 
-                padding-left: 12px; 
-                padding-right: 12px; 
-            }
-            .filter-title { 
-                font-size: 12px; 
-            }
-            .sort-dropdown { 
-                max-width: 135px; 
-                font-size: 9px; 
-            }
-            .job-card { 
-                padding: 12px; 
-            }
-            .job-title { 
-                font-size: 13px; 
-            }
-            .job-details { 
-                font-size: 10px; 
-            }
-            .job-price { 
-                font-size: 17px; 
-            }
-            .claim-btn { 
-                padding: 8px 11px; 
-                font-size: 10px; 
-            }
-        }
+    /* ---------- GLOBAL MOBILE ---------- */
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        min-height: 100%;
+        overflow: hidden;
+    }
 
-        @media (max-width: 360px) {
-            .demo-header { 
-                font-size: 8px; 
-            }
-            .demo-header .live-badge { 
-                font-size: 7px; 
-                padding: 3px 5px; 
-            }
-            .title-text h1 { 
-                font-size: 12px; 
-            }
-            .title-text p { 
-                display: none; 
-            }
-            .wallet-pill { 
-                min-width: 76px; 
-            }
-            .wallet-pill span { 
-                font-size: 10px; 
-            }
-            .filter-bar { 
-                align-items: flex-start; 
-            }
-            .sort-dropdown { 
-                max-width: 120px; 
-            }
-            .job-card { 
-                padding: 11px; 
-            }
-            .action-pane { 
-                column-gap: 7px; 
-            }
-            .claim-btn { 
-                padding-left: 9px; 
-                padding-right: 9px; 
-            }
-        }
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ---------- DEMO HEADER ---------- */
+    .demo-header {
+        flex: 0 0 auto;
+        min-height: 44px;
+        padding:
+            max(10px, env(safe-area-inset-top))
+            14px
+            10px;
+
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 8px;
+
+        font-size: 10px;
+        white-space: nowrap;
+    }
+
+    .demo-header > div:first-child {
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .demo-header > div:last-child {
+        text-align: right;
+    }
+
+    .demo-header .live-badge {
+        justify-self: center;
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+
+    /* ---------- MAIN DESK HEADER ---------- */
+    .desk-header {
+        flex: 0 0 auto;
+        width: 100%;
+
+        padding: 14px 16px;
+        gap: 14px;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo-area {
+        min-width: 0;
+        gap: 10px;
+    }
+
+    .logo-badge {
+        flex-shrink: 0;
+        font-size: 11px;
+        padding: 7px 9px;
+        letter-spacing: .7px;
+    }
+
+    .title-text {
+        min-width: 0;
+    }
+
+    .title-text h1 {
+        font-size: 15px;
+        margin-bottom: 3px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .title-text p {
+        font-size: 10px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .wallet-pill {
+        flex-shrink: 0;
+
+        padding: 7px 9px;
+        min-width: 94px;
+
+        border-radius: 5px;
+        gap: 2px;
+
+        font-size: 9px;
+    }
+
+    .wallet-pill span {
+        font-size: 12px;
+    }
+
+    /* =====================================================
+       IMPORTANT:
+       desk-body MUST be a bounded flex container.
+       main-stage then gets the remaining height.
+       ===================================================== */
+
+    .desk-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+    }
+
+    /* ---------- SIDEBAR ---------- */
+    .sidebar {
+        flex: 0 0 auto;
+        width: 100%;
+        min-width: 0;
+
+        padding: 12px 16px 10px;
+
+        border-right: none;
+        border-bottom: 1px solid #222;
+
+        overflow: hidden;
+
+        display: block;
+    }
+
+    .sidebar .nav-label {
+        margin: 4px 0 7px;
+        font-size: 9px;
+    }
+
+    .sidebar .nav-label:first-child {
+        margin-top: 0;
+    }
+
+    /* ---------- CATEGORY SCROLLER ---------- */
+    .cat-list {
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        gap: 7px;
+        margin: 0;
+        padding: 0 0 8px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .cat-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .cat-btn {
+        flex: 0 0 auto;
+
+        width: auto;
+        min-height: 36px;
+
+        padding: 8px 12px;
+
+        border-radius: 6px;
+
+        font-size: 11px;
+        white-space: nowrap;
+
+        touch-action: manipulation;
+    }
+
+    /* ---------- ECONOMICS ---------- */
+    .metrics-container {
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        gap: 8px;
+        padding: 0 0 4px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .metrics-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .metric-card {
+        flex: 0 0 auto;
+
+        min-width: 165px;
+        min-height: 44px;
+
+        padding: 10px;
+
+        font-size: 10px;
+    }
+
+    .metric-card.saved .val {
+        font-size: 12px;
+    }
+
+    /* =====================================================
+       MAIN LEDGER
+       ===================================================== */
+    .main-stage {
+        flex: 1 1 auto;
+        min-height: 0;
+        min-width: 0;
+        width: 100%;
+
+        padding: 14px 14px
+            max(24px, env(safe-area-inset-bottom));
+
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+    }
+
+    /* ---------- FILTER BAR ---------- */
+    .filter-bar {
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 10px;
+
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+    }
+
+    .filter-title {
+        min-width: 0;
+        font-size: 13px;
+    }
+
+    .filter-title span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .sort-dropdown {
+        flex-shrink: 0;
+
+        min-height: 34px;
+        padding: 7px 9px;
+
+        font-size: 10px;
+        max-width: 150px;
+    }
+
+    /* ---------- ACTIVE JOB ---------- */
+    .active-job-panel {
+        width: 100%;
+
+        margin-bottom: 14px;
+        padding: 14px;
+
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+
+        border-radius: 7px;
+    }
+
+    .active-job-panel.show {
+        display: flex;
+    }
+
+    .aj-title {
+        font-size: 15px;
+        line-height: 1.35;
+    }
+
+    .aj-details {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    /* Updated for WhatsApp Inline buttons to stretch nicely on mobile */
+    .aj-actions {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .btn-complete, .btn-whatsapp {
+        width: 100%;
+        min-height: 42px;
+
+        padding: 10px 14px;
+
+        font-size: 12px;
+        touch-action: manipulation;
+    }
+
+    /* ---------- JOB CARDS ---------- */
+    .job-card {
+        width: 100%;
+        min-width: 0;
+
+        padding: 14px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 13px;
+
+        margin-bottom: 10px;
+
+        border-radius: 7px;
+    }
+
+    .job-card > div:first-child {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .badge {
+        font-size: 8px;
+        padding: 4px 6px;
+        margin-bottom: 8px;
+        margin-right: 4px;
+    }
+
+    .job-title {
+        font-size: 14px;
+        line-height: 1.4;
+        margin-bottom: 5px;
+
+        overflow-wrap: anywhere;
+    }
+
+    .job-details {
+        font-size: 11px;
+        line-height: 1.5;
+
+        overflow-wrap: anywhere;
+    }
+
+    /* ---------- JOB ACTION AREA ---------- */
+    .action-pane {
+        width: 100%;
+
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+
+        column-gap: 12px;
+        row-gap: 3px;
+
+        align-items: center;
+
+        padding-top: 12px;
+        border-top: 1px solid #222;
+
+        text-align: left;
+    }
+
+    .job-price {
+        grid-column: 1;
+        grid-row: 1;
+
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .job-sub {
+        grid-column: 1;
+        grid-row: 2;
+
+        font-size: 9px;
+        margin: 0;
+    }
+
+    .claim-btn {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+
+        min-height: 40px;
+
+        padding: 9px 14px;
+
+        font-size: 11px;
+        white-space: nowrap;
+
+        touch-action: manipulation;
+    }
+
+    /* ---------- EMPTY STATE ---------- */
+    #ledger-container > div[style*="text-align:center"] {
+        padding: 30px 15px !important;
+        font-size: 11px !important;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+@media (max-width: 480px) {
+
+    .demo-header {
+        grid-template-columns: 1fr auto 1fr;
+        font-size: 9px;
+    }
+
+    .demo-header .live-badge {
+        font-size: 8px;
+        padding: 3px 7px;
+    }
+
+    .desk-header {
+        padding: 12px;
+    }
+
+    .logo-area {
+        gap: 8px;
+    }
+
+    .logo-badge {
+        font-size: 10px;
+        padding: 6px 8px;
+    }
+
+    .title-text h1 {
+        font-size: 13px;
+    }
+
+    .title-text p {
+        font-size: 9px;
+    }
+
+    .wallet-pill {
+        min-width: 82px;
+        padding: 6px 7px;
+    }
+
+    .wallet-pill span {
+        font-size: 11px;
+    }
+
+    .sidebar {
+        padding: 10px 12px 8px;
+    }
+
+    .cat-btn {
+        min-height: 34px;
+        padding: 7px 10px;
+        font-size: 10px;
+    }
+
+    .metric-card {
+        min-width: 150px;
+        padding: 9px;
+        font-size: 9px;
+    }
+
+    .main-stage {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .filter-title {
+        font-size: 12px;
+    }
+
+    .sort-dropdown {
+        max-width: 135px;
+        font-size: 9px;
+    }
+
+    .job-card {
+        padding: 12px;
+    }
+
+    .job-title {
+        font-size: 13px;
+    }
+
+    .job-details {
+        font-size: 10px;
+    }
+
+    .job-price {
+        font-size: 17px;
+    }
+
+    .claim-btn {
+        padding: 8px 11px;
+        font-size: 10px;
+    }
+}
+
+
+/* =========================================================
+   EXTREMELY NARROW PHONES
+   ========================================================= */
+@media (max-width: 360px) {
+
+    .demo-header {
+        font-size: 8px;
+    }
+
+    .demo-header .live-badge {
+        font-size: 7px;
+        padding: 3px 5px;
+    }
+
+    .title-text h1 {
+        font-size: 12px;
+    }
+
+    .title-text p {
+        display: none;
+    }
+
+    .wallet-pill {
+        min-width: 76px;
+    }
+
+    .wallet-pill span {
+        font-size: 10px;
+    }
+
+    .filter-bar {
+        align-items: flex-start;
+    }
+
+    .sort-dropdown {
+        max-width: 120px;
+    }
+
+    .job-card {
+        padding: 11px;
+    }
+
+    .action-pane {
+        column-gap: 7px;
+    }
+
+    .claim-btn {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+}
     </style>
 </head>
 <body>
@@ -965,6 +1140,7 @@
 
     <div class="desk-body">
         
+        <!-- Modified Sidebar for cleaner desktop/mobile flow -->
         <div class="sidebar">
             <div class="nav-label">Marketplace Verticals</div>
             <div class="cat-list">
@@ -1008,19 +1184,6 @@
                         <button class="bot-btn" onclick="setNumber('919368274048')">
                             Shivyanshu <span>9368274048</span>
                         </button>
-                        <button class="bot-btn" onclick="setNumber('918077830147s')">
-                            Bhumi <span>8077830147</span>
-                        </button>
-                        <button class="bot-btn" onclick="setNumber('917983723885')">
-                            Parmesh <span>7983723885</span>
-                        </button>
-                        <button class="bot-btn" onclick="setNumber('916397649991')">
-                            Aditi <span>6397649991</span>
-                        </button>
-                        <button class="bot-btn" onclick="setNumber('917302246321')">
-                            Kritika <span>7302246321</span>
-                        </button>
-                       
                         <div style="font-size: 10px; color: #555; text-align: center; margin: 4px 0;">— OR MANUAL ENTRY —</div>
                         <input type="tel" id="wa-number-input" placeholder="e.g., 919876543210" value="91" />
                         <button class="btn-send-inline" onclick="submitWaInline()">Send Invite Link</button>
@@ -1034,6 +1197,7 @@
                 <div class="filter-title"><div class="live-dot"></div> <span id="ledger-title">Live Open Ledger</span></div>
                 
                 <div style="display: flex; gap: 12px; align-items: center;">
+                    <span style="font-size: 12px; color: #888; display: none;">0% Commission</span>
                     <select class="sort-dropdown" id="sort-select" onchange="updateLedger()">
                         <option value="newest">Sort: Newest First</option>
                         <option value="highest">Sort: Highest Payout</option>
@@ -1076,6 +1240,7 @@
         let operatorWallet = 850;
         let totalWorkerSavings = 4320;
 
+        // When the application starts initStorage() checks whether data already exists in the browser or not if not, it creates default jobs, wallet balance, and savings,. 
         function initStorage() {
             if (!localStorage.getItem('coopgig_jobs_v2')) localStorage.setItem('coopgig_jobs_v2', JSON.stringify(initialDummyJobs));
             if (!localStorage.getItem('coopgig_wallet')) localStorage.setItem('coopgig_wallet', '850');
@@ -1084,6 +1249,7 @@
             loadData();
         }
 
+        // loadData() takes the saved data from the browser and loads it into the app. Get the saved jobs, wallet, and savings, then update the screen...
         function loadData() {
             openJobs = JSON.parse(localStorage.getItem('coopgig_jobs_v2')) || [];
             operatorWallet = parseFloat(localStorage.getItem('coopgig_wallet')) || 850;
@@ -1091,6 +1257,9 @@
             updateLedger();
             updateStats();
         }
+
+          // It keeps different tabs synchronized when the jobs data changes
+        // Jaise agar customerPortal me kuch add kia to manager portal me show iski vajah se hi hoga.
 
         window.addEventListener('storage', (e) => {
             if (e.key === 'coopgig_jobs_v2') { loadData(); }
@@ -1100,7 +1269,7 @@
             currentFilter = catId;
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
-            document.getElementById('ledger-title').innerText = catId === 'all' ? 'Live Open Ledger' : `Live ${categories[catId].name}`;
+            document.getElementById('ledger-title').innerText = catId === 'all' ? 'Live Open Ledger' : `Live ${categories[catId].name}`; // iska matlab ki agar selected category all leads hai to display kro 'live open ledger' nhi to jo category visited hai uska nam show kro.
             updateLedger();
         }
 
@@ -1108,20 +1277,21 @@
             const container = document.getElementById('ledger-container');
             const sortMode = document.getElementById('sort-select').value;
             
-            let filtered = currentFilter === 'all' ? [...openJobs] : openJobs.filter(j => j.catId === currentFilter);
+            let filtered = currentFilter === 'all' ? [...openJobs] : openJobs.filter(j => j.catId === currentFilter);   // agar all selected hai to sb dikhao agar j ke ander kuch specific hai to vo categroy dikhao
             
             if (sortMode === 'highest') {
-                filtered.sort((a, b) => b.price - a.price);
+                filtered.sort((a, b) => b.price - a.price);  // condition filtered me lag rhi hai iska matlab seperate jobs ke ander bhi pricing wala filter kaam krega.
             } else {
                 filtered.sort((a, b) => b.id - a.id);
             }
             
-            if (filtered.length === 0) {
+            if (filtered.length === 0) {  //eg. caregiving in stock website. ( Inline styling kri hai isme)
                 container.innerHTML = '<div style="text-align:center; padding:40px; color:#666; font-size:13px;">No open leads in this category.</div>';
             } else {
                 container.innerHTML = filtered.map(job => {
                     const cat = categories[job.catId];
-                    const urgentBadge = job.urgent ? `<span class="badge urgent-badge">🚨 PRIORITY</span>` : '';
+                    const urgentBadge = job.urgent ? `<span class="badge urgent-badge">🚨 PRIORITY</span>` : '';  // if/else ka shortcut use hua hai, agr urget hau to priority badge do. ternary operator.
+                    // new job ko new likh ke aayega
                     return `
                     <div class="job-card ${job.isNew ? 'job-new' : ''}">
                         <div>
@@ -1142,10 +1312,12 @@
             if (openJobs.some(j => j.isNew)) {
                 openJobs.forEach(j => j.isNew = false);
                 localStorage.setItem('coopgig_jobs_v2', JSON.stringify(openJobs));
-            }
+            } // yahan pe new job old hojayegi.
             updateSidebarCounts();
         }
 
+
+         // updateSidebarCounts() updates the numbers shown beside each category in the sidebar.
         function updateSidebarCounts() {
             document.getElementById('count-all').innerText = openJobs.length;
             Object.keys(categories).forEach(cat => {
@@ -1154,11 +1326,17 @@
             });
         }
 
+
+            // updateStats() updates the wallet and savings amounts shown on the screen.
+
         function updateStats() {
             document.getElementById('wallet-bal').innerText = `₹ ${operatorWallet.toFixed(2)}`;
             document.getElementById('total-saved').innerText = `₹ ${Math.round(totalWorkerSavings).toLocaleString()}`;
         }
 
+
+         // claimJob(id) handles a worker claiming a job.
+        // Find the job, check if wallet has enough money, deduct the micro-fee,  remove the job from the open list,  save everything, show the job as In Progress
         function claimJob(id) {
             const jobIndex = openJobs.findIndex(j => j.id === id);
             activeJob = openJobs[jobIndex];
@@ -1186,10 +1364,11 @@
             badgeEl.className = `badge ${categories[activeJob.catId].badgeClass}`;
             badgeEl.innerText = `IN PROGRESS: ${categories[activeJob.catId].name}`;
             
+            // Reset styles in case it was previously set to warning
             badgeEl.style.backgroundColor = '';
             badgeEl.style.color = '';
             badgeEl.style.borderColor = '';
-            
+
             document.getElementById('aj-title').innerText = activeJob.title;
             document.getElementById('aj-details').innerText = `Customer Agreed Price: ₹${activeJob.price} • Micro-Fee Paid: ₹${fee}`;
             panel.classList.add('show');
@@ -1222,7 +1401,8 @@
             const encodedTitle = encodeURIComponent(activeJob.title);
             const workerUrl = `https://coopgig.app/dispatch?jobId=${activeJob.id}&pay=${activeJob.price}&task=${encodedTitle}`;
             
-
+            const message = `*New Lead Secured!*\n${activeJob.title}\nDirect Offer: ₹${activeJob.price}\n\nTap to Accept & Get Customer Details:\n${workerUrl}`;
+            
             // Close the inline box after sending
             document.getElementById('wa-inline-box').style.display = 'none';
 
@@ -1239,6 +1419,7 @@
             badgeEl.style.borderColor = 'rgba(245, 158, 11, 0.3)';
         }
 
+        // Finish job,  calculate savings,  update savings,  mark job completed,  hide active job. 
         function markJobComplete() {
             document.getElementById('active-panel').classList.remove('show');
             
@@ -1255,6 +1436,17 @@
         }
 
         initStorage();
+
+
+        //initStorage() Sets up the initial data in browser storage.
+            // loadData()   Loads saved data from storage into the app.
+            // filterLedger()   Shows jobs from the selected category.
+            // updateLedger()   Filters, sorts and displays the jobs.
+            // updateSidebarCounts()    Updates the job counts for each category.
+            // updateStats()    Updates wallet and savings displayed on screen.
+            // claimJob()   Claims a job, deducts the fee and marks it as active.
+            // markJobComplete()    Completes the job and calculates the worker's savings. 
+
     </script>
 </body>
 </html>
